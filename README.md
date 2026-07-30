@@ -1,37 +1,46 @@
 # kai-deployments
 
-Configuración e orquestación **por cliente** (single-tenant / multi-instance) para la plataforma Kai.
+Orquestación **por tenant** (SaaS single-tenant / multi-instancia) para la plataforma Kai.
 
 El código de producto vive en [`kai-suite`](https://github.com/felipechandiadev/kai-suite).  
-Este repo solo define **cómo corre cada instancia** (puertos, dominios, compose/PM2, env examples).
+Este repo define **cómo corre cada instancia** (puertos, dominios, compose/PM2, env examples).
 
 ## Estructura
 
 ```text
-clients/
-  demo/            # Ambiente demo (kaisuite.pro)
-  joyarte/
-  san-sebastian/
-global/            # Scripts / plantillas compartidas (opcional)
+_shared/                 # Plantillas y scripts reutilizables
+  templates/
+  scripts/
+tenants/                 # Una carpeta = una instancia aislada
+  kai-store-demo/        # Demo vertical KaiStore
+  kai-food-demo/         # Demo vertical KaiFood
 ```
+
+## Tenants actuales
+
+| Tenant | Producto (`KAI_PRODUCT`) | Notas |
+|--------|--------------------------|--------|
+| `kai-store-demo` | `kaistore` | Demo retail / joyería |
+| `kai-food-demo` | `kaifood` | Demo salón / KDS / mesero |
+
+Clientes reales (joyarte, san-sebastian, …) se agregarán cuando haya instancia que orquestar.
 
 ## Reglas
 
 - **No** subir `.env` reales, certificados ni dumps de BD.
 - Usar `.env.example` y secretos en el VPS / vault.
 - Backups → object storage (`s3://…`), nunca Git.
-- Apuntar a imágenes o checkout de `kai-suite` versionado (tags), no copiar el monorepo aquí.
+- Dockerfiles de build viven en **kai-suite**; aquí solo compose/PM2 y config.
+- Seeds de producto: `kai-suite/seeds/`; este repo solo overrides de instancia si hacen falta.
 
 ## Desarrollo local
 
-Abrí el workspace multi-root `kai-platform.code-workspace` desde `kai-suite` para ver ambos repos en Cursor:
-
-- `kai-suite` → código
-- `kai-deployments` → este repo (hermano: `../kai-deployments`)
+Abrí `kai-platform.code-workspace` desde `kai-suite` (multi-root: suite + este repo).
 
 ## Relación con kai-suite
 
 | En kai-suite | En kai-deployments |
 |--------------|--------------------|
-| `deploy/` (bootstrap VPS, ports demo example) | Estado por cliente en `clients/*` |
-| `envs/`, `seeds/` (producto / fixtures) | Overrides y secretos de instancia |
+| `deploy/` (bootstrap VPS) | Estado por tenant en `tenants/*` |
+| `envs/`, `seeds/` | Overrides y secretos de instancia |
+| Dockerfiles / imágenes | Referenciadas desde compose (cuando existan) |
