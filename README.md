@@ -14,7 +14,9 @@ global-services/                # Runtime 1×: PostGIS, Redis, mail, voice, OSRM
 _shared/                        # Plantillas y scripts
 tenants/                        # Una carpeta = una instancia aislada
   kai-store-demo/
+    seed/                       # Bootstrap datos (copia inicial desde kai-suite/seeds/demo)
   kai-food-demo/
+    seed/
 ```
 
 ## Shared vs tenant
@@ -85,7 +87,7 @@ Bloques de puertos: `kai-store-demo` ~506x; `kai-food-demo` ~516x.
 - Passwords solo en `.env` del tenant / vault.
 - Backups → object storage, nunca Git.
 - Dockerfiles de build → **kai-suite**; aquí compose/PM2 y config de host.
-- Seeds de producto → `kai-suite/seeds/`.
+- Seeds de producto canónicos: `kai-suite/seeds/`. Por tenant: `tenants/<id>/seed/` (copia de trabajo; demos parten de `seeds/demo`).
 
 ## Desarrollo local
 
