@@ -111,52 +111,69 @@ for (const t of tenants) {
   }
 
   const apps = t.apps;
-  if (apps != null) {
-    if (Array.isArray(apps)) {
-      errors.push(
-        `${t.id}: apps debe ser objeto { web, native } (no array plano)`,
-      );
-    } else if (typeof apps !== "object") {
-      errors.push(`${t.id}: apps inválido`);
+  const WEB_KEYS = [
+    "backend",
+    "admin",
+    "pos",
+    "stock",
+    "eshop",
+    "delivery",
+    "waiter",
+    "kds",
+    "board",
+    "landing",
+  ];
+  const NATIVE_PLATFORMS = {
+    printers: ["android", "windows", "macos"],
+    cfd: ["android"],
+  };
+
+  if (apps == null || typeof apps !== "object" || Array.isArray(apps)) {
+    errors.push(`${t.id}: apps debe ser objeto { web, native } con booleanos`);
+  } else {
+    const web = apps.web;
+    if (!web || typeof web !== "object" || Array.isArray(web)) {
+      errors.push(`${t.id}: apps.web debe ser mapa app → boolean`);
     } else {
-      if (apps.web != null) {
-        if (!Array.isArray(apps.web) || !apps.web.every((x) => typeof x === "string")) {
-          errors.push(`${t.id}: apps.web debe ser string[]`);
+      for (const key of WEB_KEYS) {
+        if (!(key in web)) {
+          errors.push(`${t.id}: apps.web falta clave "${key}"`);
+        } else if (typeof web[key] !== "boolean") {
+          errors.push(`${t.id}: apps.web.${key} debe ser true|false`);
         }
       }
-      if (apps.native != null) {
-        if (!Array.isArray(apps.native)) {
-          errors.push(`${t.id}: apps.native debe ser array`);
-        } else {
-          const nativeIds = new Set();
-          const allowedPlatforms = new Set([
-            "android",
-            "windows",
-            "macos",
-            "linux",
-            "ios",
-          ]);
-          for (const n of apps.native) {
-            if (!n || typeof n !== "object" || typeof n.id !== "string" || !n.id) {
-              errors.push(`${t.id}: apps.native[] requiere id`);
-              continue;
-            }
-            if (nativeIds.has(n.id)) {
-              errors.push(`${t.id}: apps.native id duplicado (${n.id})`);
-            }
-            nativeIds.add(n.id);
-            if (!Array.isArray(n.platforms) || n.platforms.length === 0) {
-              errors.push(`${t.id}: apps.native.${n.id} requiere platforms[]`);
-            } else {
-              for (const p of n.platforms) {
-                if (!allowedPlatforms.has(p)) {
-                  errors.push(
-                    `${t.id}: apps.native.${n.id} plataforma inválida (${p})`,
-                  );
-                }
-              }
-            }
+      for (const key of Object.keys(web)) {
+        if (!WEB_KEYS.includes(key)) {
+          errors.push(`${t.id}: apps.web clave desconocida "${key}"`);
+        }
+      }
+    }
+
+    const native = apps.native;
+    if (!native || typeof native !== "object" || Array.isArray(native)) {
+      errors.push(`${t.id}: apps.native debe ser mapa id → { plataforma: boolean }`);
+    } else {
+      for (const [nid, platforms] of Object.entries(NATIVE_PLATFORMS)) {
+        if (!(nid in native) || typeof native[nid] !== "object" || Array.isArray(native[nid])) {
+          errors.push(`${t.id}: apps.native.${nid} requerido`);
+          continue;
+        }
+        for (const p of platforms) {
+          if (!(p in native[nid])) {
+            errors.push(`${t.id}: apps.native.${nid} falta plataforma "${p}"`);
+          } else if (typeof native[nid][p] !== "boolean") {
+            errors.push(`${t.id}: apps.native.${nid}.${p} debe ser true|false`);
           }
+        }
+        for (const p of Object.keys(native[nid])) {
+          if (!platforms.includes(p)) {
+            errors.push(`${t.id}: apps.native.${nid} plataforma desconocida "${p}"`);
+          }
+        }
+      }
+      for (const nid of Object.keys(native)) {
+        if (!(nid in NATIVE_PLATFORMS)) {
+          errors.push(`${t.id}: apps.native id desconocido "${nid}"`);
         }
       }
     }

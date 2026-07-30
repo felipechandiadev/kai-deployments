@@ -85,29 +85,28 @@
         "board": null
       },
       "apps": {
-        "web": [
-          "backend",
-          "admin",
-          "pos",
-          "stock",
-          "eshop",
-          "delivery",
-          "landing"
-        ],
-        "native": [
-          {
-            "id": "printers",
-            "label": "Kai Printers",
-            "platforms": ["android", "windows", "macos"],
-            "source": "kai-suite (kai-printers-android, kai-printers-desktop)"
+        "web": {
+          "backend": true,
+          "admin": true,
+          "pos": true,
+          "stock": true,
+          "eshop": true,
+          "delivery": true,
+          "waiter": false,
+          "kds": false,
+          "board": false,
+          "landing": true
+        },
+        "native": {
+          "printers": {
+            "android": true,
+            "windows": true,
+            "macos": true
           },
-          {
-            "id": "cfd",
-            "label": "Kai CFD",
-            "platforms": ["android"],
-            "source": "kai-suite (kai-screen-android)"
+          "cfd": {
+            "android": true
           }
-        ]
+        }
       }
     },
     {
@@ -149,30 +148,28 @@
         "board": 5169
       },
       "apps": {
-        "web": [
-          "backend",
-          "admin",
-          "pos",
-          "stock",
-          "waiter",
-          "kds",
-          "board",
-          "landing"
-        ],
-        "native": [
-          {
-            "id": "printers",
-            "label": "Kai Printers",
-            "platforms": ["android", "windows", "macos"],
-            "source": "kai-suite (kai-printers-android, kai-printers-desktop)"
+        "web": {
+          "backend": true,
+          "admin": true,
+          "pos": true,
+          "stock": true,
+          "eshop": false,
+          "delivery": false,
+          "waiter": true,
+          "kds": true,
+          "board": true,
+          "landing": true
+        },
+        "native": {
+          "printers": {
+            "android": true,
+            "windows": true,
+            "macos": true
           },
-          {
-            "id": "cfd",
-            "label": "Kai CFD",
-            "platforms": ["android"],
-            "source": "kai-suite (kai-screen-android)"
+          "cfd": {
+            "android": true
           }
-        ]
+        }
       }
     }
   ]
