@@ -29,8 +29,10 @@
     },
     "mail": {
       "mode": "shared",
+      "defaultMode": "shared",
       "url": "http://localhost:5040",
-      "notes": "kai-mail compartido (KAI_MAIL_URL). Ops: global-services/mail/. Cola BullMQ mail-send."
+      "port": 5040,
+      "notes": "Default compartido (global-services/mail). Override por tenant: tenants[].mail.mode = shared|dedicated. Dedicated exige url o port propios."
     },
     "voice": {
       "mode": "shared",
@@ -57,6 +59,9 @@
         "user": "kai_store_demo"
       },
       "redisKeyPrefix": "kai-store-demo:",
+      "mail": {
+        "mode": "shared"
+      },
       "hosts": {
         "backend": "core.store-demo.example.com",
         "admin": "admin.store-demo.example.com",
@@ -101,6 +106,9 @@
         "user": "kai_food_demo"
       },
       "redisKeyPrefix": "kai-food-demo:",
+      "mail": {
+        "mode": "shared"
+      },
       "hosts": {
         "backend": "core.food-demo.example.com",
         "admin": "admin.food-demo.example.com",

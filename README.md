@@ -23,7 +23,8 @@ tenants/                        # Una carpeta = una instancia aislada
 |----------------------------------------------------|--------------------------------------------------|
 | Postgres + PostGIS (1 instancia) | `database.name` / `database.user` |
 | Redis (1 instancia) | `redisKeyPrefix` → `REDIS_KEY_PREFIX` |
-| OSRM, kai-mail, kai-voice | Misma URL en todos los backends |
+| OSRM, kai-voice | Misma URL en todos los backends |
+| kai-mail (**default shared**) | `tenants[].mail.mode`: `shared` \| `dedicated` (+ url/port si dedicated) |
 | Proxy 80/443 | Puertos y hosts de apps |
 
 ## Tenant Registry
@@ -39,8 +40,8 @@ cp tenants-registry.example.json tenants-registry.json
 | `tenants-registry.example.json` | Sí |
 | `tenants-registry.json` | **No** |
 
-Campos por tenant activos: `id`, `ports`, `database.name`, `redisKeyPrefix`.  
-Validación: ids, puertos, nombres de BD y prefijos Redis únicos; `sharedServices.postgres|redis|osrm` presentes.
+Campos por tenant activos: `id`, `ports`, `database.name`, `redisKeyPrefix`, opcional `mail.mode`.  
+Validación: ids, puertos (apps + mail dedicated + shared mail), BD y prefijos Redis únicos; `sharedServices.postgres|redis|osrm|mail` presentes.
 
 Bloques de puertos: `kai-store-demo` ~506x; `kai-food-demo` ~516x.
 

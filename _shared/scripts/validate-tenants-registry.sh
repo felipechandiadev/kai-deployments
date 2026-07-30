@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Valida tenants-registry.json: ids, puertos, database.name, redisKeyPrefix, sharedServices.
+# Valida tenants-registry.json: ids, puertos, database, redisKeyPrefix, mail.mode, sharedServices.
 # Uso: ./_shared/scripts/validate-tenants-registry.sh
 set -euo pipefail
 
@@ -25,16 +25,38 @@ const tenants = (data.tenants || []).filter((t) => t.active !== false);
 const shared = data.sharedServices || {};
 const errors = [];
 
-for (const key of ["postgres", "redis", "osrm"]) {
+for (const key of ["postgres", "redis", "osrm", "mail"]) {
   if (!shared[key] || typeof shared[key] !== "object") {
     errors.push(`sharedServices.${key} es obligatorio`);
   }
+}
+
+const sharedMail = shared.mail || {};
+if (sharedMail.mode && !["shared", "dedicated"].includes(sharedMail.mode)) {
+  errors.push(`sharedServices.mail.mode inválido: ${sharedMail.mode}`);
+}
+if (typeof sharedMail.url !== "string" || !sharedMail.url) {
+  errors.push("sharedServices.mail.url es obligatorio");
 }
 
 const ids = new Set();
 const portOwners = new Map();
 const dbNames = new Set();
 const redisPrefixes = new Set();
+
+function claimPort(port, owner) {
+  if (typeof port !== "number" || !Number.isInteger(port)) {
+    errors.push(`${owner}: puerto inválido (${port})`);
+    return;
+  }
+  const prev = portOwners.get(port);
+  if (prev) errors.push(`colisión puerto ${port}: ${prev} y ${owner}`);
+  else portOwners.set(port, owner);
+}
+
+if (typeof sharedMail.port === "number") {
+  claimPort(sharedMail.port, "sharedServices.mail");
+}
 
 for (const t of tenants) {
   if (!t.id) {
@@ -62,16 +84,30 @@ for (const t of tenants) {
     redisPrefixes.add(t.redisKeyPrefix);
   }
 
+  const mail = t.mail;
+  if (mail != null) {
+    if (typeof mail !== "object") {
+      errors.push(`${t.id}: mail debe ser objeto`);
+    } else {
+      const mode = mail.mode ?? "shared";
+      if (!["shared", "dedicated"].includes(mode)) {
+        errors.push(`${t.id}: mail.mode inválido (${mode})`);
+      }
+      if (mode === "dedicated") {
+        const hasUrl = typeof mail.url === "string" && mail.url.length > 0;
+        const hasPort = typeof mail.port === "number" && Number.isInteger(mail.port);
+        if (!hasUrl && !hasPort) {
+          errors.push(`${t.id}: mail dedicated requiere url o port`);
+        }
+        if (hasPort) claimPort(mail.port, `${t.id}/mail`);
+      }
+    }
+  }
+
   const ports = t.ports || {};
   for (const [app, port] of Object.entries(ports)) {
     if (port == null) continue;
-    if (typeof port !== "number" || !Number.isInteger(port)) {
-      errors.push(`${t.id}.${app}: puerto inválido (${port})`);
-      continue;
-    }
-    const prev = portOwners.get(port);
-    if (prev) errors.push(`colisión puerto ${port}: ${prev} y ${t.id}/${app}`);
-    else portOwners.set(port, `${t.id}/${app}`);
+    claimPort(port, `${t.id}/${app}`);
   }
 }
 
