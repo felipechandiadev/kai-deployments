@@ -37,7 +37,8 @@
     "voice": {
       "mode": "shared",
       "url": "http://localhost:5041",
-      "notes": "kai-voice compartido (KAI_VOICE_URL)."
+      "port": 5041,
+      "notes": "kai-voice compartido (KAI_VOICE_URL). Ops: global-services/voice/. TTS stateless — un proceso por host."
     },
     "proxy": {
       "mode": "shared",

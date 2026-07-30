@@ -10,7 +10,7 @@ Este repo define **cómo corre cada instancia** y los servicios **compartidos** 
 ```text
 tenants-registry.example.json   # Plantilla del registro (commiteable)
 tenants-registry.json           # Registro real del host (gitignored)
-global-services/                # Runtime 1×: PostGIS, Redis, OSRM, proxy
+global-services/                # Runtime 1×: PostGIS, Redis, mail, voice, OSRM, proxy
 _shared/                        # Plantillas y scripts
 tenants/                        # Una carpeta = una instancia aislada
   kai-store-demo/

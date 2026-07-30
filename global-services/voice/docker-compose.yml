@@ -1,0 +1,12 @@
+# Stub — preferí levantar desde kai-suite/services/kai-voice (npm run start:dev).
+# Runtime 1× compartido en el host (puerto 5041).
+services:
+  kai-voice:
+    profiles: ["voice"]
+    # build / image: ajustar al empaquetado Python del monorepo en el VPS
+    image: kai-voice:local
+    environment:
+      PORT: "5041"
+    ports:
+      - "5041:5041"
+    restart: unless-stopped
