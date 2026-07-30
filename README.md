@@ -40,8 +40,32 @@ cp tenants-registry.example.json tenants-registry.json
 | `tenants-registry.example.json` | Sí |
 | `tenants-registry.json` | **No** |
 
-Campos por tenant activos: `id`, `ports`, `database.name`, `redisKeyPrefix`, opcional `mail.mode`.  
-Validación: ids, puertos (apps + mail dedicated + shared mail), BD y prefijos Redis únicos; `sharedServices.postgres|redis|osrm|mail` presentes.
+Campos por tenant activos: `id`, `ports`, `database.name`, `redisKeyPrefix`, `apps.{web,native}`, opcional `mail.mode`.  
+Validación: ids, puertos (apps + mail dedicated + shared mail), BD y prefijos Redis únicos; `apps.native[].platforms`; `sharedServices.postgres|redis|osrm|mail` presentes.
+
+### `apps` (web + nativos)
+
+```json
+"apps": {
+  "web": ["backend", "admin", "pos", "stock", "eshop", "delivery", "landing"],
+  "native": [
+    {
+      "id": "printers",
+      "label": "Kai Printers",
+      "platforms": ["android", "windows", "macos"],
+      "source": "kai-suite (kai-printers-android, kai-printers-desktop)"
+    },
+    {
+      "id": "cfd",
+      "label": "Kai CFD",
+      "platforms": ["android"],
+      "source": "kai-suite (kai-screen-android)"
+    }
+  ]
+}
+```
+
+Los nativos **no** ocupan puerto del host; el registry declara qué instalables/plataformas habilita el tenant (descargas POS `/downloads/`, etc.).
 
 Bloques de puertos: `kai-store-demo` ~506x; `kai-food-demo` ~516x.
 

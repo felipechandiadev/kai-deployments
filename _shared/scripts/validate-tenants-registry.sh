@@ -109,8 +109,59 @@ for (const t of tenants) {
     if (port == null) continue;
     claimPort(port, `${t.id}/${app}`);
   }
-}
 
+  const apps = t.apps;
+  if (apps != null) {
+    if (Array.isArray(apps)) {
+      errors.push(
+        `${t.id}: apps debe ser objeto { web, native } (no array plano)`,
+      );
+    } else if (typeof apps !== "object") {
+      errors.push(`${t.id}: apps inválido`);
+    } else {
+      if (apps.web != null) {
+        if (!Array.isArray(apps.web) || !apps.web.every((x) => typeof x === "string")) {
+          errors.push(`${t.id}: apps.web debe ser string[]`);
+        }
+      }
+      if (apps.native != null) {
+        if (!Array.isArray(apps.native)) {
+          errors.push(`${t.id}: apps.native debe ser array`);
+        } else {
+          const nativeIds = new Set();
+          const allowedPlatforms = new Set([
+            "android",
+            "windows",
+            "macos",
+            "linux",
+            "ios",
+          ]);
+          for (const n of apps.native) {
+            if (!n || typeof n !== "object" || typeof n.id !== "string" || !n.id) {
+              errors.push(`${t.id}: apps.native[] requiere id`);
+              continue;
+            }
+            if (nativeIds.has(n.id)) {
+              errors.push(`${t.id}: apps.native id duplicado (${n.id})`);
+            }
+            nativeIds.add(n.id);
+            if (!Array.isArray(n.platforms) || n.platforms.length === 0) {
+              errors.push(`${t.id}: apps.native.${n.id} requiere platforms[]`);
+            } else {
+              for (const p of n.platforms) {
+                if (!allowedPlatforms.has(p)) {
+                  errors.push(
+                    `${t.id}: apps.native.${n.id} plataforma inválida (${p})`,
+                  );
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
 if (errors.length) {
   console.error("tenants-registry inválido:");
   for (const e of errors) console.error(" -", e);

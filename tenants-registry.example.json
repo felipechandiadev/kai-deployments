@@ -84,15 +84,31 @@
         "kds": null,
         "board": null
       },
-      "apps": [
-        "backend",
-        "admin",
-        "pos",
-        "stock",
-        "eshop",
-        "delivery",
-        "landing"
-      ]
+      "apps": {
+        "web": [
+          "backend",
+          "admin",
+          "pos",
+          "stock",
+          "eshop",
+          "delivery",
+          "landing"
+        ],
+        "native": [
+          {
+            "id": "printers",
+            "label": "Kai Printers",
+            "platforms": ["android", "windows", "macos"],
+            "source": "kai-suite (kai-printers-android, kai-printers-desktop)"
+          },
+          {
+            "id": "cfd",
+            "label": "Kai CFD",
+            "platforms": ["android"],
+            "source": "kai-suite (kai-screen-android)"
+          }
+        ]
+      }
     },
     {
       "id": "kai-food-demo",
@@ -132,16 +148,32 @@
         "kds": 5168,
         "board": 5169
       },
-      "apps": [
-        "backend",
-        "admin",
-        "pos",
-        "stock",
-        "waiter",
-        "kds",
-        "board",
-        "landing"
-      ]
+      "apps": {
+        "web": [
+          "backend",
+          "admin",
+          "pos",
+          "stock",
+          "waiter",
+          "kds",
+          "board",
+          "landing"
+        ],
+        "native": [
+          {
+            "id": "printers",
+            "label": "Kai Printers",
+            "platforms": ["android", "windows", "macos"],
+            "source": "kai-suite (kai-printers-android, kai-printers-desktop)"
+          },
+          {
+            "id": "cfd",
+            "label": "Kai CFD",
+            "platforms": ["android"],
+            "source": "kai-suite (kai-screen-android)"
+          }
+        ]
+      }
     }
   ]
 }
