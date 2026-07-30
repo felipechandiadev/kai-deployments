@@ -1,0 +1,15 @@
+# Stub OSRM compartido — preferir ops en kai-suite hasta services/kai-osrm
+# Primera carga de mapa: scripts del monorepo (osrm-bootstrap).
+services:
+  osrm:
+    image: ghcr.io/project-osrm/osrm-backend:latest
+    container_name: kai-global-osrm
+    ports:
+      - "5001:5000"
+    # Montar extract ya procesado (ruta a ajustar en el host):
+    # volumes:
+    #   - /var/lib/kai/osrm-data:/data
+    # command: osrm-routed --algorithm mld /data/maule-parral.osrm
+    profiles:
+      - osrm
+    restart: unless-stopped

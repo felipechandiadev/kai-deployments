@@ -2,6 +2,7 @@
 
 Instancia demo del vertical **KaiStore** (`KAI_PRODUCT=kaistore`).
 
-- Perfil de producto de referencia en suite: `envs/profiles/demo.env.example` / retail.
-- Seeds de producto: `kai-suite/seeds/` (no duplicar aquí).
-- Completar `.env` en el VPS (gitignored) a partir de `.env.example`.
+- Registry: `database.name=kai_store_demo`, `redisKeyPrefix=kai-store-demo:`
+- Shared: `OSRM_URL` / mail / voice / Postgres+Redis del host (`global-services/`)
+- Seeds de producto: `kai-suite/seeds/` (no duplicar aquí)
+- Completar `.env` en el VPS a partir de `.env.example`

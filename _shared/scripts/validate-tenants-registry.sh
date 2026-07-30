@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Valida tenants-registry.json: ids únicos y puertos sin colisión entre tenants activos.
+# Valida tenants-registry.json: ids, puertos, database.name, redisKeyPrefix, sharedServices.
 # Uso: ./_shared/scripts/validate-tenants-registry.sh
 set -euo pipefail
 
@@ -22,10 +22,19 @@ const fs = require("fs");
 const file = process.env.TENANTS_REGISTRY_PATH;
 const data = JSON.parse(fs.readFileSync(file, "utf8"));
 const tenants = (data.tenants || []).filter((t) => t.active !== false);
+const shared = data.sharedServices || {};
+const errors = [];
+
+for (const key of ["postgres", "redis", "osrm"]) {
+  if (!shared[key] || typeof shared[key] !== "object") {
+    errors.push(`sharedServices.${key} es obligatorio`);
+  }
+}
 
 const ids = new Set();
 const portOwners = new Map();
-const errors = [];
+const dbNames = new Set();
+const redisPrefixes = new Set();
 
 for (const t of tenants) {
   if (!t.id) {
@@ -34,6 +43,24 @@ for (const t of tenants) {
   }
   if (ids.has(t.id)) errors.push(`id duplicado: ${t.id}`);
   ids.add(t.id);
+
+  if (!t.database || typeof t.database.name !== "string" || !t.database.name) {
+    errors.push(`${t.id}: falta database.name`);
+  } else {
+    if (dbNames.has(t.database.name)) {
+      errors.push(`database.name duplicado: ${t.database.name}`);
+    }
+    dbNames.add(t.database.name);
+  }
+
+  if (typeof t.redisKeyPrefix !== "string" || !t.redisKeyPrefix) {
+    errors.push(`${t.id}: falta redisKeyPrefix`);
+  } else {
+    if (redisPrefixes.has(t.redisKeyPrefix)) {
+      errors.push(`redisKeyPrefix duplicado: ${t.redisKeyPrefix}`);
+    }
+    redisPrefixes.add(t.redisKeyPrefix);
+  }
 
   const ports = t.ports || {};
   for (const [app, port] of Object.entries(ports)) {
@@ -55,6 +82,6 @@ if (errors.length) {
 }
 
 console.log(
-  `OK ${file}: ${tenants.length} tenant(s) activo(s), ${portOwners.size} puerto(s) asignados.`,
+  `OK ${file}: ${tenants.length} tenant(s), ${portOwners.size} puerto(s), ${dbNames.size} DB, ${redisPrefixes.size} redis prefix(es).`,
 );
 NODE

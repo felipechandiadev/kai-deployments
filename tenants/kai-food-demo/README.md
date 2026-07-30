@@ -2,6 +2,7 @@
 
 Instancia demo del vertical **KaiFood** (`KAI_PRODUCT=kaifood`).
 
-- Perfil de producto de referencia en suite: `envs/profiles/kaifood.env.example`.
-- Seeds de producto: `kai-suite/seeds/` (no duplicar aquí).
-- Completar `.env` en el VPS (gitignored) a partir de `.env.example`.
+- Registry: `database.name=kai_food_demo`, `redisKeyPrefix=kai-food-demo:`
+- Shared: `OSRM_URL` / mail / voice / Postgres+Redis del host (`global-services/`)
+- Seeds de producto: `kai-suite/seeds/` (no duplicar aquí)
+- Completar `.env` en el VPS a partir de `.env.example`

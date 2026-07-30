@@ -1,11 +1,47 @@
 {
   "version": 1,
-  "description": "Plantilla del Tenant Registry — copiar a tenants-registry.json (gitignored) y completar. No secretos aquí.",
+  "description": "Plantilla del Tenant Registry — copiar a tenants-registry.json (gitignored). Sin secretos.",
   "baseDomain": "example.com",
   "portRanges": {
     "reservedSystem": "5000-5050",
     "tenantsRange": "5060-5999",
     "blockSizeHint": 100
+  },
+  "sharedServices": {
+    "postgres": {
+      "mode": "shared",
+      "host": "localhost",
+      "port": 5432,
+      "engine": "postgis",
+      "notes": "Una instancia PostGIS. Una database por tenant (tenants[].database)."
+    },
+    "redis": {
+      "mode": "shared",
+      "host": "localhost",
+      "port": 6379,
+      "notes": "Un Redis. Aislamiento vía tenants[].redisKeyPrefix → REDIS_KEY_PREFIX."
+    },
+    "osrm": {
+      "mode": "shared",
+      "url": "http://localhost:5001",
+      "source": "kai-suite (backend OSRM / services/kai-osrm pendiente)",
+      "notes": "Un OSRM para todos los backends (OSRM_URL)."
+    },
+    "mail": {
+      "mode": "shared",
+      "url": "http://localhost:5040",
+      "notes": "kai-mail compartido (KAI_MAIL_URL)."
+    },
+    "voice": {
+      "mode": "shared",
+      "url": "http://localhost:5041",
+      "notes": "kai-voice compartido (KAI_VOICE_URL)."
+    },
+    "proxy": {
+      "mode": "shared",
+      "ports": [80, 443],
+      "notes": "Reverse proxy del host; vhosts desde tenants[].hosts/ports."
+    }
   },
   "tenants": [
     {
@@ -16,6 +52,11 @@
       "product": "kaistore",
       "folder": "tenants/kai-store-demo",
       "baseDomain": "store-demo.example.com",
+      "database": {
+        "name": "kai_store_demo",
+        "user": "kai_store_demo"
+      },
+      "redisKeyPrefix": "kai-store-demo:",
       "hosts": {
         "backend": "core.store-demo.example.com",
         "admin": "admin.store-demo.example.com",
@@ -23,8 +64,7 @@
         "stock": "stock.store-demo.example.com",
         "eshop": "shop.store-demo.example.com",
         "delivery": "delivery.store-demo.example.com",
-        "landing": "store-demo.example.com",
-        "mail": null
+        "landing": "store-demo.example.com"
       },
       "ports": {
         "backend": 5060,
@@ -36,8 +76,7 @@
         "landing": 5066,
         "waiter": null,
         "kds": null,
-        "board": null,
-        "mail": 5040
+        "board": null
       },
       "apps": [
         "backend",
@@ -46,7 +85,6 @@
         "stock",
         "eshop",
         "delivery",
-        "mail",
         "landing"
       ]
     },
@@ -58,6 +96,11 @@
       "product": "kaifood",
       "folder": "tenants/kai-food-demo",
       "baseDomain": "food-demo.example.com",
+      "database": {
+        "name": "kai_food_demo",
+        "user": "kai_food_demo"
+      },
+      "redisKeyPrefix": "kai-food-demo:",
       "hosts": {
         "backend": "core.food-demo.example.com",
         "admin": "admin.food-demo.example.com",
@@ -66,8 +109,7 @@
         "waiter": "waiter.food-demo.example.com",
         "kds": "kds.food-demo.example.com",
         "board": "board.food-demo.example.com",
-        "landing": "food-demo.example.com",
-        "mail": null
+        "landing": "food-demo.example.com"
       },
       "ports": {
         "backend": 5160,
@@ -79,8 +121,7 @@
         "landing": 5166,
         "waiter": 5167,
         "kds": 5168,
-        "board": 5169,
-        "mail": 5140
+        "board": 5169
       },
       "apps": [
         "backend",
@@ -90,7 +131,6 @@
         "waiter",
         "kds",
         "board",
-        "mail",
         "landing"
       ]
     }
