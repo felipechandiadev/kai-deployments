@@ -30,7 +30,7 @@
     "mail": {
       "mode": "shared",
       "url": "http://localhost:5040",
-      "notes": "kai-mail compartido (KAI_MAIL_URL)."
+      "notes": "kai-mail compartido (KAI_MAIL_URL). Ops: global-services/mail/. Cola BullMQ mail-send."
     },
     "voice": {
       "mode": "shared",
