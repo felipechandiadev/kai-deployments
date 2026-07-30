@@ -1,0 +1,25 @@
+# Secrets & local overrides
+.env
+.env.*
+!.env.example
+!**/.env.example
+*.pem
+*.pfx
+*.key
+id_ed25519*
+id_rsa*
+
+# Backups & dumps (never in git)
+backups/
+**/*.sql
+**/*.sql.gz
+**/*.dump
+**/*.tar
+**/*.tar.gz
+
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/
+!.vscode/extensions.json
