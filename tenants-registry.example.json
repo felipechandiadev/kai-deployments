@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "description": "Plantilla del Tenant Registry — copiar a tenants-registry.json (gitignored) y completar. No secretos aquí.",
+  "baseDomain": "example.com",
+  "portRanges": {
+    "reservedSystem": "5000-5050",
+    "tenantsRange": "5060-5999",
+    "blockSizeHint": 100
+  },
+  "tenants": [
+    {
+      "id": "kai-store-demo",
+      "name": "KaiStore Demo",
+      "active": true,
+      "environment": "staging",
+      "product": "kaistore",
+      "folder": "tenants/kai-store-demo",
+      "baseDomain": "store-demo.example.com",
+      "hosts": {
+        "backend": "core.store-demo.example.com",
+        "admin": "admin.store-demo.example.com",
+        "pos": "pos.store-demo.example.com",
+        "stock": "stock.store-demo.example.com",
+        "eshop": "shop.store-demo.example.com",
+        "delivery": "delivery.store-demo.example.com",
+        "landing": "store-demo.example.com",
+        "mail": null
+      },
+      "ports": {
+        "backend": 5060,
+        "admin": 5071,
+        "pos": 5062,
+        "stock": 5063,
+        "eshop": 5064,
+        "delivery": 5065,
+        "landing": 5066,
+        "waiter": null,
+        "kds": null,
+        "board": null,
+        "mail": 5040
+      },
+      "apps": [
+        "backend",
+        "admin",
+        "pos",
+        "stock",
+        "eshop",
+        "delivery",
+        "mail",
+        "landing"
+      ]
+    },
+    {
+      "id": "kai-food-demo",
+      "name": "KaiFood Demo",
+      "active": true,
+      "environment": "staging",
+      "product": "kaifood",
+      "folder": "tenants/kai-food-demo",
+      "baseDomain": "food-demo.example.com",
+      "hosts": {
+        "backend": "core.food-demo.example.com",
+        "admin": "admin.food-demo.example.com",
+        "pos": "pos.food-demo.example.com",
+        "stock": "stock.food-demo.example.com",
+        "waiter": "waiter.food-demo.example.com",
+        "kds": "kds.food-demo.example.com",
+        "board": "board.food-demo.example.com",
+        "landing": "food-demo.example.com",
+        "mail": null
+      },
+      "ports": {
+        "backend": 5160,
+        "admin": 5171,
+        "pos": 5162,
+        "stock": 5163,
+        "eshop": null,
+        "delivery": null,
+        "landing": 5166,
+        "waiter": 5167,
+        "kds": 5168,
+        "board": 5169,
+        "mail": 5140
+      },
+      "apps": [
+        "backend",
+        "admin",
+        "pos",
+        "stock",
+        "waiter",
+        "kds",
+        "board",
+        "mail",
+        "landing"
+      ]
+    }
+  ]
+}

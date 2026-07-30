@@ -9,6 +9,10 @@
 id_ed25519*
 id_rsa*
 
+# Tenant registry (host ports / domains reales) — solo el example va a Git
+tenants-registry.json
+!tenants-registry.example.json
+
 # Backups & dumps (never in git)
 backups/
 **/*.sql
