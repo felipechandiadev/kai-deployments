@@ -1,12 +1,9 @@
 # Tenant: kai-store-demo
 
-Instancia demo del vertical **KaiStore** (`KAI_PRODUCT=kaistore`).
+Instancia demo **KaiStore** (`KAI_PRODUCT=kaistore`). Puertos **506x**.
 
-- Registry: `database.name=kai_store_demo`, `redisKeyPrefix=kai-store-demo:`
-- Shared: `OSRM_URL` / mail / voice / Postgres+Redis del host (`global-services/`)
-- Seeds de producto: `kai-suite/seeds/` (no duplicar aquí)
-- Completar `.env` en el VPS a partir de `.env.example`
+```bash
+./_shared/scripts/dev-tenant.sh kai-store-demo
+```
 
-## Seed
-
-Copia de trabajo desde `kai-suite/seeds/demo` en `seed/` (bootstrap del tenant). El runner canónico del monorepo sigue en `kai-suite/seeds/`.
+Misma convención que [`kai-food-demo`](../kai-food-demo/README.md): `.env` / `seed/` / `backups/` / `uploads/`; builds en kai-suite.

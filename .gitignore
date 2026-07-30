@@ -15,6 +15,10 @@ tenants-registry.json
 
 # Backups & dumps (never in git)
 backups/
+**/backups/**
+!**/backups/.gitkeep
+tenants/*/uploads/**
+!tenants/*/uploads/.gitkeep
 **/*.sql
 **/*.sql.gz
 **/*.dump

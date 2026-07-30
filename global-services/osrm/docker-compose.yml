@@ -1,4 +1,4 @@
-# Stub OSRM compartido — preferir ops en kai-suite hasta services/kai-osrm
+# Stub OSRM compartido — ops canónicas en kai/services/kai-osrm
 # Primera carga de mapa: scripts del monorepo (osrm-bootstrap).
 services:
   osrm:

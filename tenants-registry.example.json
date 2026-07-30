@@ -24,7 +24,7 @@
     "osrm": {
       "mode": "shared",
       "url": "http://localhost:5001",
-      "source": "kai-suite (backend OSRM / services/kai-osrm pendiente)",
+      "source": "kai-suite/services/kai-osrm",
       "notes": "Un OSRM para todos los backends (OSRM_URL)."
     },
     "mail": {
@@ -54,6 +54,7 @@
       "environment": "staging",
       "product": "kaistore",
       "folder": "tenants/kai-store-demo",
+      "seed": { "profile": "demo" },
       "baseDomain": "store-demo.example.com",
       "database": {
         "name": "kai_store_demo",
@@ -116,6 +117,7 @@
       "environment": "staging",
       "product": "kaifood",
       "folder": "tenants/kai-food-demo",
+      "seed": { "profile": "demo" },
       "baseDomain": "food-demo.example.com",
       "database": {
         "name": "kai_food_demo",
@@ -137,7 +139,7 @@
       },
       "ports": {
         "backend": 5160,
-        "admin": 5171,
+        "admin": 5161,
         "pos": 5162,
         "stock": 5163,
         "eshop": null,

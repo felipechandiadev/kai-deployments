@@ -93,10 +93,30 @@ Bloques de puertos: `kai-store-demo` ~506x; `kai-food-demo` ~516x.
 
 Abrí `kai-platform.code-workspace` desde `kai-suite` (multi-root).
 
+### Un tenant en modo instancia (recomendado KaiFood)
+
+```bash
+# desde este repo
+./_shared/scripts/validate-tenants-registry.sh
+./_shared/scripts/dev-tenant.sh kai-food-demo          # apps food en :516x
+./_shared/scripts/dev-tenant.sh kai-food-demo --seed   # + seed demo
+```
+
+El script:
+
+1. Materializa `tenants/<id>/.env` (registry + `.env.example`; no pisa secretos).
+2. Crea la database PostGIS del tenant si falta.
+3. Proyecta envs al checkout de **kai-suite** (`KAI_ENV_MATRIX`).
+4. Corre migraciones y levanta solo las apps de `apps.web` (+ mail).
+
+**Builds** viven en `kai-suite` / registry de imágenes — **no** en `tenants/`.
+
+Volver al perfil suite default: `cd ../kai && npm run env:dev`.
+
 ## Relación con kai-suite
 
 | En kai-suite | En kai-deployments |
 |--------------|--------------------|
 | `deploy/` (bootstrap VPS) | Estado por tenant + `global-services/` |
-| `envs/`, `seeds/` | Overrides de instancia |
+| `envs/`, `seeds/` | Overrides de instancia + `dev-tenant` |
 | OSRM / mail / voice (código) | Runtime 1× documentado aquí |
