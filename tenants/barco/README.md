@@ -80,3 +80,15 @@ Apps: `backend,admin,pos,stock,waiter,menu,board,kds` (sin landing).
 
 - Menu slug: `NEXT_PUBLIC_MENU_STORE_SLUG=ohlala`
 - Tenant id / carpeta / DB siguen siendo `barco`
+
+## Kai Printers (descargas POS)
+
+Tras publicar en kai-suite (`npm run kai-printers:publish -- --windows-only`), verificar para este tenant:
+
+```bash
+# desde kai-deployments
+./_shared/scripts/sync-tenant-pos-downloads.sh barco
+```
+
+Local (puerto POS `5262`): `http://localhost:5262/downloads/kai-printers-windows.manifest.json`  
+Público: `https://pos.ohlala.kaisuite.pro/downloads/…` (tras rsync al VPS).

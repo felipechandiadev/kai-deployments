@@ -20,3 +20,7 @@ fi
 
 echo "→ deploy-tenant: $TENANT ($DIR)"
 echo "  TODO: leer $DIR/.env, ecosystem o docker compose, migraciones."
+echo "  Tip: sincronizar descargas POS (Kai Printers) si el tenant las ofrece:"
+echo "    ./_shared/scripts/sync-tenant-pos-downloads.sh $TENANT"
+echo "    TENANT_POS_DOWNLOADS_RSYNC_TARGET=user@host:/path/kai-pos/public/downloads/ \\"
+echo "      ./_shared/scripts/sync-tenant-pos-downloads.sh $TENANT --rsync"

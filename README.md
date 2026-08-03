@@ -111,6 +111,19 @@ El script:
 
 **Builds** viven en `kai-suite` / registry de imágenes — **no** en `tenants/`.
 
+### Descargas Kai Printers (POS)
+
+Los binarios viven en `kai-suite/kai-pos/public/downloads/` (un checkout compartido en local). Verificar / sincronizar por tenant:
+
+```bash
+./_shared/scripts/sync-tenant-pos-downloads.sh barco
+# VPS:
+TENANT_POS_DOWNLOADS_RSYNC_TARGET=user@host:/path/kai-pos/public/downloads/ \
+  ./_shared/scripts/sync-tenant-pos-downloads.sh barco --rsync
+```
+
+Publicar Windows desde kai-suite: `npm run kai-printers:publish -- --windows-only`.
+
 Volver al perfil suite default: `cd ../kai && npm run env:dev`.
 
 ## Relación con kai-suite
