@@ -121,6 +121,7 @@ for (const t of tenants) {
     "waiter",
     "kds",
     "board",
+    "menu",
     "landing",
   ];
   const NATIVE_PLATFORMS = {

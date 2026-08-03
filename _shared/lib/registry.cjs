@@ -45,6 +45,7 @@ const WEB_ORDER = [
   "waiter",
   "kds",
   "board",
+  "menu",
   "mail",
   "voice",
   "landing",
@@ -76,10 +77,15 @@ function envVarsFromTenant(data, t) {
     lines.push(`${k}=${v}`);
   };
 
+  const product = (t.product || "kaistore").toLowerCase();
   put("KAI_PRODUCT", t.product || "kaistore");
   put(
     "LANDING_PRODUCT",
-    t.product === "kaifood" ? "food" : "store",
+    product === "kaifood"
+      ? "food"
+      : product === "kaisuite"
+        ? "suite"
+        : "store",
   );
   put("KAI_DEV_HOST", host);
   put("KAI_DEPLOY_APPS", deployAppsFromWeb(web));
@@ -110,6 +116,7 @@ function envVarsFromTenant(data, t) {
   put("KAI_WAITER_PORT", ports.waiter);
   put("KAI_KDS_PORT", ports.kds);
   put("KAI_BOARD_PORT", ports.board);
+  put("KAI_MENU_PORT", ports.menu);
 
   put("KAI_BACKEND_URL", `http://${host}:${backendPort}`);
   put("BACKEND_API_URL", `http://${host}:${backendPort}`);
@@ -124,8 +131,14 @@ function envVarsFromTenant(data, t) {
   if (ports.stock != null) {
     put("STOCK_NEXTAUTH_URL", `http://${host}:${ports.stock}`);
   }
+  if (ports.menu != null) {
+    put("MENU_NEXTAUTH_URL", `http://${host}:${ports.menu}`);
+  }
   if (ports.eshop != null) {
     put("NEXT_PUBLIC_ESHOP_SITE_URL", `http://${host}:${ports.eshop}`);
+  }
+  if (product === "kaisuite" || t.id === "kai-suite-demo") {
+    put("NEXT_PUBLIC_MENU_STORE_SLUG", "kai-food");
   }
 
   put("KAI_FEATURE_JEWELRY", web.eshop ? "false" : "false");
@@ -137,6 +150,9 @@ function envVarsFromTenant(data, t) {
 
   if (t.seed && t.seed.profile) {
     put("KAI_SEED_PROFILE", t.seed.profile);
+  }
+  if (t.seed && t.seed.mode) {
+    put("KAI_SEED_MODE", t.seed.mode);
   }
 
   put("NODE_ENV", "development");

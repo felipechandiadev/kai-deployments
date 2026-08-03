@@ -2,10 +2,10 @@
 # Dev local de un tenant (como instancia): materializa .env, BD, proyecta a kai-suite y levanta apps.
 #
 # Uso:
-#   ./_shared/scripts/dev-tenant.sh kai-food-demo
-#   ./_shared/scripts/dev-tenant.sh kai-food-demo --seed
-#   ./_shared/scripts/dev-tenant.sh kai-food-demo --apps-only
-#   ./_shared/scripts/dev-tenant.sh kai-food-demo --no-infra --no-migrate
+#   ./_shared/scripts/dev-tenant.sh kai-suite-demo
+#   ./_shared/scripts/dev-tenant.sh kai-suite-demo --seed
+#   ./_shared/scripts/dev-tenant.sh kai-suite-demo --apps-only
+#   ./_shared/scripts/dev-tenant.sh kai-suite-demo --no-infra --no-migrate
 #
 # Builds viven en kai-suite; este repo solo orquesta config/datos.
 set -euo pipefail
@@ -98,9 +98,40 @@ fi
 echo "==> Proyectar envs → suite (KAI_ENV_MATRIX=$TENANT_ENV)"
 KAI_ENV_MATRIX="$TENANT_ENV" bash "$SUITE/envs/sync-dev-envs.sh" --force
 
+tenant_db_has_schema() {
+  local db_host db_port db_user db_name db_pass
+  db_host="$(grep -E '^DB_HOST=' "$TENANT_ENV" 2>/dev/null | head -1 | cut -d= -f2-)"
+  db_host="${db_host:-localhost}"
+  db_port="$(grep -E '^DB_PORT=' "$TENANT_ENV" 2>/dev/null | head -1 | cut -d= -f2-)"
+  db_port="${db_port:-5432}"
+  db_user="$(grep -E '^DB_USERNAME=' "$TENANT_ENV" 2>/dev/null | head -1 | cut -d= -f2-)"
+  db_name="$(grep -E '^DB_DATABASE=' "$TENANT_ENV" 2>/dev/null | head -1 | cut -d= -f2-)"
+  db_pass="$(grep -E '^DB_PASSWORD=' "$TENANT_ENV" 2>/dev/null | head -1 | cut -d= -f2-)"
+  db_pass="${db_pass:-kai123}"
+  [[ -n "$db_user" && -n "$db_name" ]] || return 1
+  command -v psql >/dev/null 2>&1 || return 0
+  PGPASSWORD="$db_pass" psql -h "$db_host" -p "$db_port" -U "$db_user" -d "$db_name" -tAc \
+    "SELECT 1 FROM information_schema.tables WHERE table_schema='public' AND table_name='companies' LIMIT 1" \
+    2>/dev/null | grep -q 1
+}
+
+SEED_SYNCHRONIZE=false
+if [[ "$DO_MIGRATE" == true ]] && ! tenant_db_has_schema; then
+  echo "==> BD sin esquema — omitiendo migration:run (seed usará DB_SYNCHRONIZE=true)"
+  DO_MIGRATE=false
+  SEED_SYNCHRONIZE=true
+fi
+
 if [[ "$DO_MIGRATE" == true ]]; then
   echo "==> Migraciones kai-core"
-  (cd "$SUITE/kai-core" && npm run migration:run)
+  if ! (cd "$SUITE/kai-core" && npm run migration:run); then
+    if tenant_db_has_schema; then
+      echo "==> migration:run falló con esquema existente — baseline dev (DB_SYNCHRONIZE)"
+      (cd "$SUITE/kai-core" && npm run migration:baseline)
+    else
+      exit 1
+    fi
+  fi
 fi
 
 if [[ "$DO_SEED" == true ]]; then
@@ -108,8 +139,20 @@ if [[ "$DO_SEED" == true ]]; then
   PROFILE="${PROFILE:-demo}"
   echo "==> Seed profile=$PROFILE (DB del tenant vía kai-core/.env)"
   case "$PROFILE" in
-    demo|kaifood|food)
-      (cd "$SUITE" && npm run seed:demo)
+    demo|kaifood|food|suite)
+      if [[ "$SEED_SYNCHRONIZE" == true ]]; then
+        (cd "$SUITE" && DB_SYNCHRONIZE=true npm run seed:demo)
+        echo "==> Baseline migraciones post-sync"
+        (cd "$SUITE/kai-core" && npm run migration:baseline)
+      else
+        (cd "$SUITE" && npm run seed:demo)
+      fi
+      ;;
+    barco)
+      (cd "$SUITE" && npm run seed:barco)
+      ;;
+    joyarte)
+      (cd "$SUITE" && npm run seed:joyarte)
       ;;
     *)
       echo "[dev-tenant] seed.profile desconocido ($PROFILE); corré seed manualmente" >&2

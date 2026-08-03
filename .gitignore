@@ -25,6 +25,13 @@ tenants/*/uploads/**
 **/*.tar
 **/*.tar.gz
 
+# Barco: Firebird + JSONL son insumos locales para regenerar catálogo;
+# el seed usa solo tenants/barco/seed/data/catalog-*.json
+tenants/barco/*.FDB
+tenants/barco/exports/PDVDATA*/
+tenants/barco/exports/**/*.jsonl
+tenants/barco/exports/**/_meta.json
+
 # OS / editor
 .DS_Store
 *.swp

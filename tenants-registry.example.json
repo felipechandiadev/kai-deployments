@@ -48,42 +48,49 @@
   },
   "tenants": [
     {
-      "id": "kai-store-demo",
-      "name": "KaiStore Demo",
+      "id": "kai-suite-demo",
+      "name": "Kai Suite Demo",
       "active": true,
       "environment": "staging",
-      "product": "kaistore",
-      "folder": "tenants/kai-store-demo",
-      "seed": { "profile": "demo" },
-      "baseDomain": "store-demo.example.com",
+      "product": "kaisuite",
+      "folder": "tenants/kai-suite-demo",
+      "seed": { "profile": "suite", "mode": "suite" },
+      "baseDomain": "suite-demo.example.com",
+      "companies": [
+        { "name": "Kai Store", "kaiProduct": "kaistore" },
+        { "name": "Kai Food", "kaiProduct": "kaifood", "menuPublicSlug": "kai-food" }
+      ],
       "database": {
-        "name": "kai_store_demo",
-        "user": "kai_store_demo"
+        "name": "kai_suite_demo",
+        "user": "kai_suite_demo"
       },
-      "redisKeyPrefix": "kai-store-demo:",
-      "mail": {
-        "mode": "shared"
-      },
+      "redisKeyPrefix": "kai-suite-demo:",
+      "mail": { "mode": "shared" },
       "hosts": {
-        "backend": "core.store-demo.example.com",
-        "admin": "admin.store-demo.example.com",
-        "pos": "pos.store-demo.example.com",
-        "stock": "stock.store-demo.example.com",
-        "eshop": "shop.store-demo.example.com",
-        "delivery": "delivery.store-demo.example.com",
-        "landing": "store-demo.example.com"
+        "backend": "core.suite-demo.example.com",
+        "admin": "admin.suite-demo.example.com",
+        "pos": "pos.suite-demo.example.com",
+        "stock": "stock.suite-demo.example.com",
+        "eshop": "shop.suite-demo.example.com",
+        "delivery": "delivery.suite-demo.example.com",
+        "waiter": "waiter.suite-demo.example.com",
+        "kds": "kds.suite-demo.example.com",
+        "board": "board.suite-demo.example.com",
+        "menu": "menu.suite-demo.example.com",
+        "landing": "suite-demo.example.com"
       },
       "ports": {
-        "backend": 5060,
-        "admin": 5071,
-        "pos": 5062,
-        "stock": 5063,
-        "eshop": 5064,
-        "delivery": 5065,
-        "landing": 5066,
-        "waiter": null,
-        "kds": null,
-        "board": null
+        "backend": 5360,
+        "admin": 5371,
+        "pos": 5362,
+        "stock": 5363,
+        "eshop": 5364,
+        "delivery": 5365,
+        "landing": 5366,
+        "waiter": 5367,
+        "kds": 5368,
+        "board": 5369,
+        "menu": 5370
       },
       "apps": {
         "web": {
@@ -93,9 +100,10 @@
           "stock": true,
           "eshop": true,
           "delivery": true,
-          "waiter": false,
-          "kds": false,
-          "board": false,
+          "waiter": true,
+          "kds": true,
+          "board": true,
+          "menu": true,
           "landing": true
         },
         "native": {
@@ -111,43 +119,48 @@
       }
     },
     {
-      "id": "kai-food-demo",
-      "name": "KaiFood Demo",
+      "id": "barco",
+      "name": "Ohlala / El Barco",
       "active": true,
       "environment": "staging",
-      "product": "kaifood",
-      "folder": "tenants/kai-food-demo",
-      "seed": { "profile": "demo" },
-      "baseDomain": "food-demo.example.com",
+      "product": "kaisuite",
+      "folder": "tenants/barco",
+      "seed": { "profile": "barco" },
+      "baseDomain": "ohlala.kaisuite.pro",
+      "companies": [
+        { "name": "El Barco", "kaiProduct": "kaistore" },
+        { "name": "Ohlala", "kaiProduct": "kaifood", "menuPublicSlug": "ohlala" }
+      ],
       "database": {
-        "name": "kai_food_demo",
-        "user": "kai_food_demo"
+        "name": "barco",
+        "user": "barco"
       },
-      "redisKeyPrefix": "kai-food-demo:",
+      "redisKeyPrefix": "barco:",
       "mail": {
         "mode": "shared"
       },
       "hosts": {
-        "backend": "core.food-demo.example.com",
-        "admin": "admin.food-demo.example.com",
-        "pos": "pos.food-demo.example.com",
-        "stock": "stock.food-demo.example.com",
-        "waiter": "waiter.food-demo.example.com",
-        "kds": "kds.food-demo.example.com",
-        "board": "board.food-demo.example.com",
-        "landing": "food-demo.example.com"
+        "backend": "core.ohlala.kaisuite.pro",
+        "admin": "admin.ohlala.kaisuite.pro",
+        "pos": "pos.ohlala.kaisuite.pro",
+        "stock": "stock.ohlala.kaisuite.pro",
+        "waiter": "waiter.ohlala.kaisuite.pro",
+        "kds": "kds.ohlala.kaisuite.pro",
+        "board": "board.ohlala.kaisuite.pro",
+        "menu": "menu.ohlala.kaisuite.pro"
       },
       "ports": {
-        "backend": 5160,
-        "admin": 5161,
-        "pos": 5162,
-        "stock": 5163,
+        "backend": 5260,
+        "admin": 5271,
+        "pos": 5262,
+        "stock": 5263,
         "eshop": null,
         "delivery": null,
-        "landing": 5166,
-        "waiter": 5167,
-        "kds": 5168,
-        "board": 5169
+        "landing": null,
+        "waiter": 5267,
+        "kds": 5268,
+        "board": 5269,
+        "menu": 5270
       },
       "apps": {
         "web": {
@@ -160,7 +173,8 @@
           "waiter": true,
           "kds": true,
           "board": true,
-          "landing": true
+          "menu": true,
+          "landing": false
         },
         "native": {
           "printers": {
