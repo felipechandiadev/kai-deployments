@@ -120,7 +120,7 @@
     },
     {
       "id": "barco",
-      "name": "Ohlala / El Barco",
+      "name": "Ohlala",
       "active": true,
       "environment": "staging",
       "product": "kaisuite",
@@ -128,7 +128,6 @@
       "seed": { "profile": "barco" },
       "baseDomain": "ohlala.kaisuite.pro",
       "companies": [
-        { "name": "El Barco", "kaiProduct": "kaistore" },
         { "name": "Ohlala", "kaiProduct": "kaifood", "menuPublicSlug": "ohlala" }
       ],
       "database": {

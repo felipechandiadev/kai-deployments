@@ -1,29 +1,32 @@
 # Tenant: barco
 
-Instancia **Kai Suite** dual-company (sin landing):
+Instancia **KaiFood** (sin landing) — una empresa, dos sucursales:
 
-| Empresa | Producto | Catálogo (seed) |
-|---------|----------|-----------------|
-| **El Barco** | `kaistore` | `seed/data/catalog-store.json` (~3100 SKUs) |
-| **Ohlala** | `kaifood` | `seed/data/catalog-food.json` (~3900 SKUs) |
+| Empresa | Producto | Sucursales | Catálogo (seed) |
+|---------|----------|------------|-----------------|
+| **Ohlala** | `kaifood` | Ohlala (HQ) + El Barco | Merge `catalog-food.json` + `catalog-store.json` (~5k SKUs únicos) |
 
 Los `.FDB` y `exports/PDVDATA*` son **locales** (gitignored): solo para regenerar los JSON.
 
 ## Qué incluye el seed
 
-- Scaffold por empresa: IVA 19%, unidades, 1 sucursal, 1 bodega, lista Minorista, POS + cash hub, CC, medios de pago
-- Productos + snapshot `StockLevel` desde `DINVENTARIO` (sin historial de ventas/compras)
+- Scaffold: IVA 19%, unidades, lista Minorista, CC, medios de pago
+- Por sucursal: sala de venta (STORE), POS Caja 1, cash hub
+- Catálogo unificado (food gana en duplicados); **todos sin control de stock** (sin `StockLevel`)
 - **Ohlala:** `on_menu`, carta slug `ohlala`, tips (enabled=false), salón + 6 mesas, cocina (UP), UL Cafetería (turno 09:00–21:00) + UL Salón (mesero)
+- **El Barco:** mismo catálogo vía POS, sin mesas
 - Usuarios (password seed `098098`, todos con Person):
 
 | Usuario | Rol | Membership |
 |---------|-----|------------|
 | `superadmin` | SUPER_ADMIN | Plataforma |
-| `admin` | ADMIN | Dueño en ambas |
-| `operador` | POS_OPERATOR | Ambas |
-| `mesero` | WAITER | Solo Ohlala (+ employee tipsEligible) |
+| `admin` | ADMIN | Dueño Ohlala |
+| `operador` | POS_OPERATOR | Ohlala |
+| `mesero` | WAITER | Ohlala (+ employee tipsEligible) |
 
 El runner vive en el monorepo: `kai/seeds/barco` (`npm run seed:barco`).
+
+> **Migración dual → mono:** si ya tenías El Barco (`kaistore`) + Ohlala en la misma DB, **recreá la DB** (o wipe) antes de reseedar. El seed no fusiona empresas viejas.
 
 ## Dev local
 
@@ -60,6 +63,8 @@ python3 seed/generate_catalog.py \
   --out seed/data/catalog-food.json \
   --brand "Ohlala"
 ```
+
+El seed une ambos JSON en runtime (no hace falta un `catalog-unified.json` en git).
 
 ## Apps / carta
 
