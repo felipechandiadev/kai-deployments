@@ -47,6 +47,9 @@ case "$PROFILE" in
   barco)
     (cd "$SUITE" && npm run seed:barco)
     ;;
+  velarys)
+    (cd "$SUITE" && npm run seed:velarys)
+    ;;
   joyarte)
     (cd "$SUITE" && npm run seed:joyarte)
     ;;

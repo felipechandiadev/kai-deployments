@@ -42,7 +42,10 @@
     },
     "proxy": {
       "mode": "shared",
-      "ports": [80, 443],
+      "ports": [
+        80,
+        443
+      ],
       "notes": "Reverse proxy del host; vhosts desde tenants[].hosts/ports."
     }
   },
@@ -54,18 +57,30 @@
       "environment": "staging",
       "product": "kaisuite",
       "folder": "tenants/kai-suite-demo",
-      "seed": { "profile": "suite", "mode": "suite" },
+      "seed": {
+        "profile": "suite",
+        "mode": "suite"
+      },
       "baseDomain": "suite-demo.example.com",
       "companies": [
-        { "name": "Kai Store", "kaiProduct": "kaistore" },
-        { "name": "Kai Food", "kaiProduct": "kaifood", "menuPublicSlug": "kai-food" }
+        {
+          "name": "Kai Store",
+          "kaiProduct": "kaistore"
+        },
+        {
+          "name": "Kai Food",
+          "kaiProduct": "kaifood",
+          "menuPublicSlug": "kai-food"
+        }
       ],
       "database": {
         "name": "kai_suite_demo",
         "user": "kai_suite_demo"
       },
       "redisKeyPrefix": "kai-suite-demo:",
-      "mail": { "mode": "shared" },
+      "mail": {
+        "mode": "shared"
+      },
       "hosts": {
         "backend": "core.suite-demo.example.com",
         "admin": "admin.suite-demo.example.com",
@@ -125,10 +140,16 @@
       "environment": "staging",
       "product": "kaisuite",
       "folder": "tenants/barco",
-      "seed": { "profile": "barco" },
+      "seed": {
+        "profile": "barco"
+      },
       "baseDomain": "ohlala.kaisuite.pro",
       "companies": [
-        { "name": "Ohlala", "kaiProduct": "kaifood", "menuPublicSlug": "ohlala" }
+        {
+          "name": "Ohlala",
+          "kaiProduct": "kaifood",
+          "menuPublicSlug": "ohlala"
+        }
       ],
       "database": {
         "name": "barco",
@@ -160,6 +181,81 @@
         "kds": 5268,
         "board": 5269,
         "menu": 5270
+      },
+      "apps": {
+        "web": {
+          "backend": true,
+          "admin": true,
+          "pos": true,
+          "stock": true,
+          "eshop": false,
+          "delivery": false,
+          "waiter": true,
+          "kds": true,
+          "board": true,
+          "menu": true,
+          "landing": false
+        },
+        "native": {
+          "printers": {
+            "android": true,
+            "windows": true,
+            "macos": true
+          },
+          "cfd": {
+            "android": true
+          }
+        }
+      }
+    },
+    {
+      "id": "velarys",
+      "name": "Velarys",
+      "active": true,
+      "environment": "staging",
+      "product": "kaisuite",
+      "folder": "tenants/velarys",
+      "seed": {
+        "profile": "velarys"
+      },
+      "baseDomain": "velarys.kaisuite.pro",
+      "companies": [
+        {
+          "name": "Velarys",
+          "kaiProduct": "kaifood",
+          "menuPublicSlug": "velarys"
+        }
+      ],
+      "database": {
+        "name": "velarys",
+        "user": "velarys"
+      },
+      "redisKeyPrefix": "velarys:",
+      "mail": {
+        "mode": "shared"
+      },
+      "hosts": {
+        "backend": "core.velarys.kaisuite.pro",
+        "admin": "admin.velarys.kaisuite.pro",
+        "pos": "pos.velarys.kaisuite.pro",
+        "stock": "stock.velarys.kaisuite.pro",
+        "waiter": "waiter.velarys.kaisuite.pro",
+        "kds": "kds.velarys.kaisuite.pro",
+        "board": "board.velarys.kaisuite.pro",
+        "menu": "menu.velarys.kaisuite.pro"
+      },
+      "ports": {
+        "backend": 5460,
+        "admin": 5471,
+        "pos": 5462,
+        "stock": 5463,
+        "eshop": null,
+        "delivery": null,
+        "landing": null,
+        "waiter": 5467,
+        "kds": 5468,
+        "board": 5469,
+        "menu": 5470
       },
       "apps": {
         "web": {
