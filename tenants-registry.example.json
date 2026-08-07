@@ -282,6 +282,80 @@
           }
         }
       }
+    },
+    {
+      "id": "mias",
+      "name": "Mias",
+      "active": true,
+      "environment": "staging",
+      "product": "kaisuite",
+      "folder": "tenants/mias",
+      "seed": {
+        "profile": "mias"
+      },
+      "baseDomain": "mias.kaisuite.pro",
+      "companies": [
+        {
+          "name": "Mias",
+          "kaiProduct": "kaifood",
+          "menuPublicSlug": "mias"
+        }
+      ],
+      "database": {
+        "name": "mias",
+        "user": "mias"
+      },
+      "redisKeyPrefix": "mias:",
+      "mail": {
+        "mode": "shared"
+      },
+      "hosts": {
+        "backend": "core.mias.kaisuite.pro",
+        "admin": "admin.mias.kaisuite.pro",
+        "pos": "pos.mias.kaisuite.pro",
+        "stock": "stock.mias.kaisuite.pro",
+        "kds": "kds.mias.kaisuite.pro",
+        "board": "board.mias.kaisuite.pro",
+        "menu": "menu.mias.kaisuite.pro"
+      },
+      "ports": {
+        "backend": 5560,
+        "admin": 5571,
+        "pos": 5562,
+        "stock": 5563,
+        "eshop": null,
+        "delivery": null,
+        "landing": null,
+        "waiter": null,
+        "kds": 5568,
+        "board": 5569,
+        "menu": 5570
+      },
+      "apps": {
+        "web": {
+          "backend": true,
+          "admin": true,
+          "pos": true,
+          "stock": true,
+          "eshop": false,
+          "delivery": false,
+          "waiter": false,
+          "kds": true,
+          "board": true,
+          "menu": true,
+          "landing": false
+        },
+        "native": {
+          "printers": {
+            "android": true,
+            "windows": true,
+            "macos": true
+          },
+          "cfd": {
+            "android": true
+          }
+        }
+      }
     }
   ]
 }

@@ -50,6 +50,9 @@ case "$PROFILE" in
   velarys)
     (cd "$SUITE" && npm run seed:velarys)
     ;;
+  mias)
+    (cd "$SUITE" && npm run seed:mias)
+    ;;
   joyarte)
     (cd "$SUITE" && npm run seed:joyarte)
     ;;

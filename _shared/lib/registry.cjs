@@ -133,6 +133,7 @@ function envVarsFromTenant(data, t) {
   }
   if (ports.menu != null) {
     put("MENU_NEXTAUTH_URL", `http://${host}:${ports.menu}`);
+    put("NEXT_PUBLIC_KAI_MENU_URL", `http://${host}:${ports.menu}`);
   }
   if (ports.eshop != null) {
     put("NEXT_PUBLIC_ESHOP_SITE_URL", `http://${host}:${ports.eshop}`);
